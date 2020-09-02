@@ -14,7 +14,6 @@ metadata {
         
         capability "Configuration"
         capability "Refresh"
-        //capability "Switch"
 
         //commands, these will create the appropriate component device if it doesn't already exist...
         command "childSwitchOn"
@@ -157,8 +156,8 @@ void componentOff(cd){
 }
 
 def configure() {
-	log.debug "Executing 'configure'"
     //Config binding and report for each endpoint
+    	if (logEnable) log.debug "Executing 'configure'"
 	[
     	"zdo bind 0x${device.deviceNetworkId} 1 1 0x0006 {${device.zigbeeId}} {}", "delay 200",
     	"zcl global send-me-a-report 0x0006 0 0x10 0 600 {01}",
@@ -171,12 +170,13 @@ def configure() {
 }
 
 def refresh() {
-	log.debug "Executing 'refresh'"
     //Read Attribute On Off Value of each endpoint
+    if (logEnable)log.debug "Executing 'refresh'"
 	[
         "st rattr 0x${device.deviceNetworkId} 1 0x0006 0", "delay 200",
         "st rattr 0x${device.deviceNetworkId} 2 0x0006 0"
 	]
+    
 }
 def parseDescriptionAsMap(description) {
 	if (description?.startsWith("read attr -")) {

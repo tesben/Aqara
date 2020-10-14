@@ -116,6 +116,8 @@ def childDimmerOff(){
 def fetchChild(String type){
     String thisId = device.id
     def cd = getChildDevice("${thisId}-${type}")
+    List<Map> defaultValues = []
+
     if (!cd) {
         cd = addChildDevice("hubitat", "Generic Component ${type}", "${thisId}-${type}", [name: "${device.displayName} ${type}", isComponent: true])
         }
